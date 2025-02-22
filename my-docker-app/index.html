@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>User Profile</title>
+    <style>
+        .container {
+            width: 400px;
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-picture {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <img src="/profile-picture" class="profile-picture" alt="Profile Picture" />
+        <h3 id="name">Name: Anna Smith</h3>
+        <h3 id="email">Email: anna.smith@example.com</h3>
+        <h3 id="interests">Interests: coding</h3>
+
+        <button class="button" onclick="editProfile()">Edit Profile</button>
+        <hr />
+
+        <div id="editForm" style="display:none;">
+            <h3 class="header">Edit Profile</h3>
+            Name: <input id="input-name" type="text" value="Anna Smith" /><br /><br />
+            Email: <input id="input-email" type="text" value="anna.smith@example.com" /><br /><br />
+            Interests: <input id="input-interests" type="text" value="coding" /><br /><br />
+            <button class="button" onclick="saveProfile()">Save Profile</button>
+        </div>
+    </div>
+
+    <script>
+        function editProfile() {
+            document.getElementById('editForm').style.display = 'block';
+        }
+
+        async function saveProfile() {
+            const name = document.getElementById('input-name').value;
+            const email = document.getElementById('input-email').value;
+            const interests = document.getElementById('input-interests').value;
+
+            const response = await fetch('/api/user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, interests }),
+            });
+
+            if (response.ok) {
+                // reload data
+                const userData = await (await fetch('/api/user')).json();
+                document.getElementById('name').innerText = 'Name: ' + userData.name;
+                document.getElementById('email').innerText = 'Email: ' + userData.email;
+                document.getElementById('interests').innerText = 'Interests: ' + userData.interests;
+                document.getElementById('editForm').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

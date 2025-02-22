@@ -1,0 +1,20 @@
+# Exclude node_modules since dependencies should be installed inside the container
+node_modules
+
+# Exclude log files
+logs
+*.log
+
+# Exclude environment variable files
+.env
+
+# Exclude Git repository data
+.git
+.gitignore
+
+# Exclude temporary files and directories
+tmp
+temp
+
+# If you have local MongoDB data (when running Mongo locally for development), ignore it
+data/db
